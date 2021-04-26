@@ -1,0 +1,13 @@
+repository: localhost:5000
+
+image:
+  name: kong/python
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: local
+
+ingress:
+  hosts:
+    - host: localhost
+      paths:
+        - /

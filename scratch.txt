@@ -1,0 +1,9 @@
+docker build -t python:local .
+docker run --name python --user $(id -u):$(id -g) --group-add $(getent group docker | cut -d: -f3) -p 8123:5000 -v ${PWD}:/src -w /src -it -d python:local
+docker exec -it python /bin/bash
+
+python3 -m venv .venv
+
+. .venv/bin/activate
+export FLASK_APP=main.py FLASK_ENV=development
+flask run --host=0.0.0.0
