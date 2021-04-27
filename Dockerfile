@@ -13,15 +13,15 @@ RUN \
           -c "Non-priv'd User" -p "!disabled!" "$user" \
   ; } 
 
-USER ${user}:${group}
-
 WORKDIR /src
 COPY / /src
+RUN chown -R ${user}:${group} /src
 ENV FLASK_APP main.py
 
 EXPOSE 5000
 
-USER root
+USER ${user}:${group}
+
 RUN make install
 
 ENTRYPOINT ["/src/.venv/bin/flask"]

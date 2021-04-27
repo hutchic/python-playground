@@ -20,6 +20,15 @@ spec:
       labels:
         {{- include "charts.selectorLabels" . | nindent 8 }}
     spec:
+      {{- if hasKey .Values "volumes" }}
+      volumes:
+      {{- range .Values.volumes }}
+      - name: {{ .name | quote }}
+        hostPath:
+          path: {{ .hostPath | quote }}
+          type: Directory
+      {{- end }}
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -29,6 +38,13 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
+          {{- if hasKey .Values "volumes" }}
+          volumeMounts:
+          {{- range .Values.volumes }}
+          - mountPath: {{ .mountPath | quote }}
+            name: {{ .name | quote }}
+          {{- end }}
+          {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
