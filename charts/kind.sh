@@ -26,6 +26,7 @@ containerdConfigPatches:
     endpoint = ["http://${reg_name}:${reg_port}"]
 nodes:
 - role: control-plane
+  image: kindest/node:v1.20.2
   kubeadmConfigPatches:
   - |
     kind: InitConfiguration
@@ -67,3 +68,4 @@ kubectl create namespace argo-rollouts
 kubectl apply -n argo-rollouts -f https://raw.githubusercontent.com/argoproj/argo-rollouts/stable/manifests/install.yaml
 
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/kind/deploy.yaml
+kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission

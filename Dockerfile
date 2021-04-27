@@ -24,5 +24,5 @@ USER ${user}:${group}
 
 RUN make install
 
-ENTRYPOINT ["/src/.venv/bin/flask"]
-CMD ["run", "--host=0.0.0.0"]
+ENTRYPOINT ["make"]
+CMD ["run"]
